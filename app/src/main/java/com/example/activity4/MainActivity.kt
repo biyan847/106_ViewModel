@@ -87,6 +87,7 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
     var textname by remember { mutableStateOf("") }
     var texttlp by remember { mutableStateOf("") }
     var textemail by remember { mutableStateOf("") }
+    var textalamat by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataForm: DataFrom
@@ -130,15 +131,26 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
         onSelectionChange = {cobaviewmodel.setjenisk(it)}
 
     )
+
     Selecthubungan(
         options = hubungan.map { id -> context.resources.getString(id) },
         onSelectionChange = {cobaviewmodel.setstatus(it)})
 
+    OutlinedTextField(
+        value = textalamat ,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "alamat")},
+        onValueChange = {
+            textalamat = it
+        })
 
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaviewmodel.insertData(textname, texttlp, textemail ,dataForm.status, dataForm.sex)
+            cobaviewmodel.insertData(textname, texttlp, textemail ,dataForm.status, dataForm.sex,textalamat)
         }
     ){
         Text(
@@ -146,19 +158,19 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
             fontSize = 16.sp
         )
     }
-    Spacer(modifier = Modifier.height(15.dp))
-    TextHasil(namanya = cobaviewmodel.namausr, telponya = cobaviewmodel.noTLP,  jenisnya = cobaviewmodel.jeniskl,emailnya = cobaviewmodel.Email, statusnya = cobaviewmodel.status )
+    Spacer(modifier = Modifier.height(5.dp))
+    TextHasil(namanya = cobaviewmodel.namausr, telponya = cobaviewmodel.noTLP,  jenisnya = cobaviewmodel.jeniskl,emailnya = cobaviewmodel.Email, statusnya = cobaviewmodel.status, alamatnya = cobaviewmodel.alamat )
 }
 
 @Composable
-fun TextHasil(namanya:String, telponya: String, jenisnya:String,emailnya: String,statusnya:String,)
+fun TextHasil(namanya:String, telponya: String, jenisnya:String,emailnya: String,statusnya:String,alamatnya:String)
 {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 100.dp
+            defaultElevation = 150.dp
         ),
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
     ){
         Text(
             text = "nama : " + namanya,
@@ -182,6 +194,11 @@ fun TextHasil(namanya:String, telponya: String, jenisnya:String,emailnya: String
         )
         Text(
             text = "status :" + statusnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(
+            text = "alamat :" + alamatnya,
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
