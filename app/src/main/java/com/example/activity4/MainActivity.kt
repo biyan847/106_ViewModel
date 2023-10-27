@@ -158,7 +158,6 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
             fontSize = 16.sp
         )
     }
-    Spacer(modifier = Modifier.height(5.dp))
     TextHasil(namanya = cobaviewmodel.namausr, telponya = cobaviewmodel.noTLP,  jenisnya = cobaviewmodel.jeniskl,emailnya = cobaviewmodel.Email, statusnya = cobaviewmodel.status, alamatnya = cobaviewmodel.alamat )
 }
 
@@ -170,7 +169,7 @@ fun TextHasil(namanya:String, telponya: String, jenisnya:String,emailnya: String
             defaultElevation = 150.dp
         ),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ){
         Text(
             text = "nama : " + namanya,
@@ -210,7 +209,7 @@ fun Selectjk(
     onSelectionChange: (String) -> Unit = {}
 ){
     var selectedValue by rememberSaveable { mutableStateOf("") }
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(10.dp)) {
         options.forEach{ item ->
            Row (
                modifier = Modifier.selectable(
@@ -240,7 +239,7 @@ fun Selecthubungan(
     onSelectionChange: (String) -> Unit = {}
 ){
     var selectedValue by rememberSaveable { mutableStateOf("") }
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(10.dp)) {
         options.forEach{ item ->
             Row (
                 modifier = Modifier.selectable(
