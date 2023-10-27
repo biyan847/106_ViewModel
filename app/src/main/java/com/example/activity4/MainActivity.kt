@@ -130,6 +130,7 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
         onSelectionChange = {cobaviewmodel.setjenisk(it)}
 
     )
+
     Selecthubungan(
         options = hubungan.map { id -> context.resources.getString(id) },
         onSelectionChange = {cobaviewmodel.setstatus(it)})
