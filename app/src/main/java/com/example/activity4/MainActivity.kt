@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.activity4.Data.DataFrom
+import com.example.activity4.Data.DataSource.hubungan
 import com.example.activity4.Data.DataSource.jenis
 import com.example.activity4.ui.theme.Activity4Theme
 import org.w3c.dom.Text
@@ -84,6 +86,7 @@ fun Tampillayout(
 fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
     var textname by remember { mutableStateOf("") }
     var texttlp by remember { mutableStateOf("") }
+    var textemail by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataForm: DataFrom
@@ -110,15 +113,32 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
         onValueChange = {
             texttlp = it
         })
+
+    OutlinedTextField(
+        value = textemail ,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "email")},
+        onValueChange = {
+            textemail = it
+        })
+
     Selectjk(
         options = jenis.map {id -> context.resources.getString(id)},
         onSelectionChange = {cobaviewmodel.setjenisk(it)}
 
     )
+    Selecthubungan(
+        options = hubungan.map { id -> context.resources.getString(id) },
+        onSelectionChange = {cobaviewmodel.setstatus(it)})
+
+
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaviewmodel.insertData(textname, texttlp, dataForm.sex)
+            cobaviewmodel.insertData(textname, texttlp, textemail ,dataForm.status, dataForm.sex)
         }
     ){
         Text(
@@ -126,19 +146,19 @@ fun TampilForm(cobaviewmodel: cobaviewmodel = viewModel()){
             fontSize = 16.sp
         )
     }
-    Spacer(modifier = Modifier.height(100.dp))
-    TextHasil(namanya = cobaviewmodel.namausr, telponya = cobaviewmodel.noTLP, jenisnya = cobaviewmodel.jeniskl )
+    Spacer(modifier = Modifier.height(15.dp))
+    TextHasil(namanya = cobaviewmodel.namausr, telponya = cobaviewmodel.noTLP,  jenisnya = cobaviewmodel.jeniskl,emailnya = cobaviewmodel.Email, statusnya = cobaviewmodel.status )
 }
 
 @Composable
-fun TextHasil(namanya:String, telponya: String, jenisnya:String)
+fun TextHasil(namanya:String, telponya: String, jenisnya:String,emailnya: String,statusnya:String,)
 {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 100.dp
         ),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ){
         Text(
             text = "nama : " + namanya,
@@ -154,6 +174,16 @@ fun TextHasil(namanya:String, telponya: String, jenisnya:String)
          text = "jenis kelamin :" + jenisnya,
                  modifier = Modifier
                  .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(
+            text = "email :" + emailnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(
+            text = "status :" + statusnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
         )
     }
 }
@@ -183,9 +213,36 @@ fun Selectjk(
                )
                Text(text = item)
            }
+        }
+    }
 
-
-
+}
+@Composable
+fun Selecthubungan(
+    options: List<String>,
+    onSelectionChange: (String) -> Unit = {}
+){
+    var selectedValue by rememberSaveable { mutableStateOf("") }
+    Column(modifier = Modifier.padding(16.dp)) {
+        options.forEach{ item ->
+            Row (
+                modifier = Modifier.selectable(
+                    selected = selectedValue == item,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChange(item)
+                    }
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                RadioButton(selected = selectedValue == item,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChange(item)
+                    }
+                )
+                Text(text = item)
+            }
         }
     }
 

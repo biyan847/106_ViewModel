@@ -3,6 +3,12 @@
     <string name="laki">LAKI</string>
     <string name="perempuan">PEREMPUAN</string>
     <string name="submit">submit</string>
+    <string name="belum">belum menikah</string>
+    <string name="menikah">sudah menikah</string>
+
+
+
+
 
 
 </resources>
